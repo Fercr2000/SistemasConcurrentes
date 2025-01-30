@@ -22,10 +22,7 @@ public class EstacionBicicletas {
         this.operacionesFueraDePlazo = 0;
     }
 
-    public EstacionBicicletas(String id, List<Bicicleta> bicicletasAsignadas) {
-        this.id = id;
-        this.bicicletasAsignadas = bicicletasAsignadas;
-    }
+
 
     public EstacionBicicletas(String id, Bicicleta... bicicleta) {
         if( bicicleta == null || Arrays.stream(bicicleta).anyMatch(Objects::isNull)
@@ -46,9 +43,7 @@ public class EstacionBicicletas {
         return bicicletasAsignadas;
     }
 
-    public int getOperacionesFueraDePlazo() {
-        return operacionesFueraDePlazo;
-    }
+
 
     /**
      * Permite saber el número de bibicletas que hay en la estación disponibles
@@ -83,10 +78,10 @@ public class EstacionBicicletas {
     public Optional<Bicicleta> alquilarBicicleta() {
         //El optional hace que no trabajemos con nulos
         Optional<Bicicleta> resultado = Optional.empty();
-        Iterator it = bicicletasAsignadas.iterator();
+        Iterator<Bicicleta> it = bicicletasAsignadas.iterator();
 
         while( it.hasNext() && resultado.isEmpty()) {
-            Bicicleta bicicleta = (Bicicleta) it.next();
+            Bicicleta bicicleta = it.next();
 
             if( bicicleta.getEstado().equals(DISPONIBLE) ) {
                 bicicleta.setEstado(ALQUILADA);
@@ -187,15 +182,14 @@ public class EstacionBicicletas {
      */
     public List<Bicicleta> mantenimientoBicicletas() {
         List<Bicicleta> resultado = new ArrayList<>();
-        Iterator<Bicicleta> it = bicicletasAsignadas.iterator();
 
-        while (it.hasNext()) {
-            Bicicleta bicicleta = it.next();
+        for (Bicicleta bicicleta : bicicletasAsignadas) {
             if (bicicleta.getEstado().equals(FUERA_DE_SERVICIO)) {
                 bicicleta.setEstado(EN_REPARACION);
                 resultado.add(bicicleta);
             }
         }
+
 
         return resultado;
     }
